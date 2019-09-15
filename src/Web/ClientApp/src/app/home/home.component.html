@@ -1,0 +1,25 @@
+<div class="top">
+  <img src="assets/logo.png" />
+  <input type="file" (change)="onImageChanged($event)" />
+</div>
+
+<div class="images">
+  <image-cropper
+    [maintainAspectRatio]="true"
+    [imageChangedEvent]="imageChangedEvent"
+    (imageCropped)="onImageCropped($event)"
+  ></image-cropper>
+
+  <!-- <img *ngIf="croppedImage" class="cropped-image" [src]="croppedImage" /> -->
+
+  <img *ngIf="drosteImage" class="cropped-image" [src]="drosteImage" />
+</div>
+<mat-card *ngIf="imageChangedEvent" class="rotation-input">
+  <h3>Rotation</h3>
+  <mat-slider
+    min="-45"
+    max="45"
+    [value]="rotationDegrees"
+    (change)="onRotationChange($event.value)"
+  ></mat-slider>
+</mat-card>

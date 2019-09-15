@@ -1,0 +1,24 @@
+.top {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    margin: 10px;
+  }
+}
+.images {
+  display: flex;
+}
+
+image-cropper, .cropped-image {
+  padding: 5px;
+  width: 50%;
+  max-width: 600px;
+}
+
+.rotation-input {
+  margin: 5px;
+  width: 50%;
+}
