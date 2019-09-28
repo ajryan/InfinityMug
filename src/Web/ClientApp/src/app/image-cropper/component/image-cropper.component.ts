@@ -310,6 +310,10 @@ export class ImageCropperComponent implements OnChanges {
       this.cropper.x1 = (sourceImageElement.offsetWidth - cropperWidth) / 2
       this.cropper.x2 = this.cropper.x1 + cropperWidth
     }
+    this.cropper.x1 = this.cropper.x2 * .25
+    this.cropper.x2 = this.cropper.x2 * .75
+    this.cropper.y1 = this.cropper.y2 * .25
+    this.cropper.y2 = this.cropper.y2 * .75
     this.doAutoCrop()
     this.imageVisible = true
   }

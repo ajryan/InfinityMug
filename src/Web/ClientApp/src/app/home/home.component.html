@@ -2,14 +2,16 @@
   <img src="assets/logo.png" />
 </div>
 
-<mat-card *ngIf="imageChangedEvent" class="rotation-input">
-  <form [formGroup]="parametersForm">
-    <label>Rotation</label>
-    <mat-slider min="-45" max="45" formControlName="rotation"></mat-slider>
+<div class="images">
+  <mat-card *ngIf="imageChangedEvent" class="rotation-input">
+    <form [formGroup]="parametersForm">
+      <label>Rotation</label>
+      <mat-slider min="-45" max="45" formControlName="rotation"></mat-slider>
 
-    <mat-checkbox formControlName="roundCropper">Round?</mat-checkbox>
-  </form>
-</mat-card>
+      <mat-checkbox formControlName="roundCropper">Round?</mat-checkbox>
+    </form>
+  </mat-card>
+</div>
 
 <div class="images">
   <input
