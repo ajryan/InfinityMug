@@ -22,14 +22,14 @@ namespace Web.Controllers
     [HttpPost]
     public FileResult CreateDroste([FromForm] DrosteRequest request)
     {
-      // TODO: need to take display image size (location relative to this width)
       using (var fileStream = request.Image.OpenReadStream())
       {
         var rendered = DrosteProcessor.CreateDroste(
           fileStream,
           JsonConvert.DeserializeObject<CropDimensions>(request.Crop),
           request.RotationDegrees,
-          request.DisplayedWidth);
+          request.DisplayedWidth,
+          request.Round);
 
         using (var outputStream = new MemoryStream())
         {

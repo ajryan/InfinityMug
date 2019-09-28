@@ -1,25 +1,32 @@
 <div class="top">
   <img src="assets/logo.png" />
-  <input type="file" (change)="onImageChanged($event)" />
 </div>
+
+<mat-card *ngIf="imageChangedEvent" class="rotation-input">
+  <form [formGroup]="parametersForm">
+    <label>Rotation</label>
+    <mat-slider min="-45" max="45" formControlName="rotation"></mat-slider>
+
+    <mat-checkbox formControlName="roundCropper">Round?</mat-checkbox>
+  </form>
+</mat-card>
 
 <div class="images">
-  <image-cropper
-    [maintainAspectRatio]="true"
-    [imageChangedEvent]="imageChangedEvent"
-    (imageCropped)="onImageCropped($event)"
-  ></image-cropper>
+  <input
+    *ngIf="!imageChangedEvent; else cropper"
+    type="file"
+    (change)="onImageChanged($event)"
+  />
+  <ng-template #cropper>
+    <app-image-cropper
+      [maintainAspectRatio]="true"
+      [roundCropper]="parametersForm.value.roundCropper"
+      [cropperRotation]="parametersForm.value.rotation"
+      [aspectRatio]="2 / 2.5"
+      [imageChangedEvent]="imageChangedEvent"
+      (imageCropped)="onImageCropped($event)"
+    ></app-image-cropper>
+  </ng-template>
 
-  <!-- <img *ngIf="croppedImage" class="cropped-image" [src]="croppedImage" /> -->
-
-  <img *ngIf="drosteImage" class="cropped-image" [src]="drosteImage" />
+  <img class="cropped-image" [src]="drosteImage" />
 </div>
-<mat-card *ngIf="imageChangedEvent" class="rotation-input">
-  <h3>Rotation</h3>
-  <mat-slider
-    min="-45"
-    max="45"
-    [value]="rotationDegrees"
-    (change)="onRotationChange($event.value)"
-  ></mat-slider>
-</mat-card>

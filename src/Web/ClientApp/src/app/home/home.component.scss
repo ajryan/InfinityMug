@@ -6,13 +6,16 @@
 
   img {
     margin: 10px;
+    max-width: 100%;
   }
 }
 .images {
   display: flex;
+  justify-content: center;
 }
 
-image-cropper, .cropped-image {
+app-image-cropper,
+.cropped-image {
   padding: 5px;
   width: 50%;
   max-width: 600px;
@@ -21,4 +24,22 @@ image-cropper, .cropped-image {
 .rotation-input {
   margin: 5px;
   width: 50%;
+}
+
+@media screen and (max-width: 600px) {
+  .top {
+    img {
+      margin: 0 0 5px 0;
+      max-width: 100%;
+    }
+  }
+
+  .rotation-input {
+    width: 100%;
+  }
+
+  .images {
+    flex-direction: column;
+    align-items: center;
+  }
 }

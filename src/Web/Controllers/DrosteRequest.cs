@@ -8,6 +8,7 @@ namespace Web.Controllers
     public string Crop { get; set; }
     public int DisplayedWidth { get; set; }
     public int RotationDegrees { get; set; }
+    public bool Round { get; set; }
   }
 
   public class CropDimensions

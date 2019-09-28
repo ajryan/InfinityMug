@@ -14,7 +14,8 @@ namespace Web.Processing
       Stream imageStream,
       CropDimensions crop,
       int rotationDegrees,
-      int displayedWidth)
+      int displayedWidth,
+      bool round)
     {
       var image = Image.Load<Rgba32>(imageStream);
       crop.Scale(image.Width, displayedWidth);
@@ -23,7 +24,7 @@ namespace Web.Processing
 
       for (int copy = 1; copy <= 4; copy++)
       {
-        AddScaledOverlay(image, crop, rotationDegrees);
+        AddScaledOverlay(image, crop, rotationDegrees, round);
       }
 
       return image;
@@ -32,17 +33,21 @@ namespace Web.Processing
     private static void AddScaledOverlay(
       Image<Rgba32> image,
       CropDimensions crop,
-      int rotationDegrees)
+      int rotationDegrees,
+      bool round)
     {
-      var widthScale = crop.Width / image.Width;
+      double widthScale = crop.Width / image.Width;
 
       var scaledCopy = image.Clone();
-      scaledCopy.Mutate(o => o
-        .ApplyRoundedCorners()
-        .Resize(
-          (int)(widthScale * image.Width),
-          (int)(widthScale * image.Height))
-        .Rotate(rotationDegrees));
+      scaledCopy.Mutate(o =>
+      {
+        if (round)
+        {
+          o.ApplyRoundedCorners();
+        }
+        o.Resize((int)(widthScale * image.Width), (int)(widthScale * image.Height))
+          .Rotate(rotationDegrees);
+      });
 
       image.Mutate(o =>
         o.DrawImage(

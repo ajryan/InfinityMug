@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
-html, body {
+html,
+body {
   background-color: #252525;
   color: #eee;
+  margin: 0;
 }
 
 /* Provide sufficient contrast against white background */

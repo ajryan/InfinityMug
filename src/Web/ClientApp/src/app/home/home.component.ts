@@ -1,7 +1,9 @@
 import { Component, Inject, ViewChild } from '@angular/core'
-import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper'
 import { HttpClient } from '@angular/common/http'
 import { Subscription } from 'rxjs'
+import { ImageCropperComponent } from '../image-cropper/component/image-cropper.component'
+import { ImageCroppedEvent } from '../image-cropper/interfaces/image-cropped-event.interface'
+import { FormGroup, FormBuilder } from '@angular/forms'
 
 @Component({
   selector: 'app-home',
@@ -12,23 +14,25 @@ export class HomeComponent {
   @ViewChild(ImageCropperComponent, { static: false })
   imageCropper: ImageCropperComponent
 
+  readonly parametersForm: FormGroup
   imageChangedEvent?: Event
   inputImage?: File
   lastCropEvent?: ImageCroppedEvent
-  drosteImage?: any
-  rotationDegrees = -18
+  drosteImage?: any = ''
+  roundCropper = true
+
   private renderSub: Subscription
 
   constructor(
+    fb: FormBuilder,
     @Inject('BASE_URL') private readonly baseUrl: string,
     private readonly http: HttpClient
-  ) {}
-
-  get imageAspectRatio(): string | undefined {
-    return (
-      this.lastCropEvent &&
-      `${this.lastCropEvent.height} / ${this.lastCropEvent.width}`
-    )
+  ) {
+    this.parametersForm = fb.group({
+      rotation: -18,
+      roundCropper: true
+    })
+    this.parametersForm.valueChanges.subscribe(() => this.getNewPreview())
   }
 
   onImageChanged(event: Event): void {
@@ -36,11 +40,6 @@ export class HomeComponent {
 
     const inputElement = event.target as HTMLInputElement
     this.inputImage = inputElement.files[0]
-  }
-
-  onRotationChange(value: number): void {
-    this.rotationDegrees = value
-    this.getNewPreview()
   }
 
   onImageCropped(event: ImageCroppedEvent): void {
@@ -58,9 +57,10 @@ export class HomeComponent {
     formData.append('crop', JSON.stringify(this.lastCropEvent.cropperPosition))
     formData.append(
       'displayedWidth',
-      this.imageCropper['maxSize'].width.toString()
+      this.imageCropper.maxSize.width.toString()
     )
-    formData.append('rotationDegrees', this.rotationDegrees.toString())
+    formData.append('rotationDegrees', this.parametersForm.value.rotation.toString())
+    formData.append('round', this.parametersForm.value.roundCropper.toString())
 
     if (this.renderSub) {
       this.renderSub.unsubscribe()
