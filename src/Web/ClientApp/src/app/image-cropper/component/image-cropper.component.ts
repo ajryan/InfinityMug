@@ -11,8 +11,7 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   NgZone,
-  ViewChild,
-  Renderer2
+  ViewChild
 } from '@angular/core'
 import { DomSanitizer, SafeUrl, SafeStyle } from '@angular/platform-browser'
 import {
@@ -113,8 +112,7 @@ export class ImageCropperComponent implements OnChanges {
   constructor(
     private sanitizer: DomSanitizer,
     private cd: ChangeDetectorRef,
-    private zone: NgZone,
-    private renderer: Renderer2
+    private zone: NgZone
   ) {
     this.initCropper()
   }
