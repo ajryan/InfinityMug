@@ -11,23 +11,25 @@
       <mat-button-toggle value="upload">Upload</mat-button-toggle>
       <mat-button-toggle value="camera">Camera</mat-button-toggle>
     </mat-button-toggle-group>
+  </div>
+  <div class="webcam-capture">
+    <webcam
+      *ngIf="imageSource.value === 'camera'; else upload"
+      [trigger]="webcamCapture$"
+      [videoOptions]="{ aspectRatio: 1.333333333 }"
+      (imageCapture)="onWebcamImageCapture($event)"
+    ></webcam>
     <button
       #captureButton="matButton"
       *ngIf="imageSource.value === 'camera'"
       mat-raised-button
-      class="image-source__capture-button"
+      class="webcam-capture__button"
       color="primary"
       (click)="webcamCapture$.next()"
     >
       Capture
     </button>
   </div>
-  <webcam
-    *ngIf="imageSource.value === 'camera'; else upload"
-    [trigger]="webcamCapture$"
-    [videoOptions]="{ aspectRatio: 1.333333333 }"
-    (imageCapture)="onWebcamImageCapture($event)"
-  ></webcam>
   <ng-template #upload>
     <input matInput type="file" (change)="onImageChanged($event)" />
   </ng-template>
