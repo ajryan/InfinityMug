@@ -2,8 +2,39 @@
   <img src="assets/logo.png" />
 </div>
 
-<div class="images">
-  <mat-card *ngIf="imageChangedEvent" class="rotation-input">
+<div class="image-source">
+  <div class="image-source__buttons">
+    <mat-button-toggle-group
+      class="image-source__toggle"
+      [formControl]="imageSource"
+    >
+      <mat-button-toggle value="upload">Upload</mat-button-toggle>
+      <mat-button-toggle value="camera">Camera</mat-button-toggle>
+    </mat-button-toggle-group>
+    <button
+      #captureButton="matButton"
+      *ngIf="imageSource.value === 'camera'"
+      mat-raised-button
+      class="image-source__capture-button"
+      color="primary"
+      (click)="webcamCapture$.next()"
+    >
+      Capture
+    </button>
+  </div>
+  <webcam
+    *ngIf="imageSource.value === 'camera'; else upload"
+    [trigger]="webcamCapture$"
+    [videoOptions]="{ aspectRatio: 1.333333333 }"
+    (imageCapture)="onWebcamImageCapture($event)"
+  ></webcam>
+  <ng-template #upload>
+    <input matInput type="file" (change)="onImageChanged($event)" />
+  </ng-template>
+</div>
+
+<div class="hcenter">
+  <mat-card *ngIf="imageChangedEvent || imageBase64" class="rotation-input">
     <form [formGroup]="parametersForm">
       <label>Rotation</label>
       <mat-slider min="-45" max="45" formControlName="rotation"></mat-slider>
@@ -13,22 +44,16 @@
   </mat-card>
 </div>
 
-<div class="images">
-  <input
-    *ngIf="!imageChangedEvent; else cropper"
-    type="file"
-    (change)="onImageChanged($event)"
-  />
-  <ng-template #cropper>
-    <app-image-cropper
-      [maintainAspectRatio]="true"
-      [roundCropper]="parametersForm.value.roundCropper"
-      [cropperRotation]="parametersForm.value.rotation"
-      [aspectRatio]="2 / 2.5"
-      [imageChangedEvent]="imageChangedEvent"
-      (imageCropped)="onImageCropped($event)"
-    ></app-image-cropper>
-  </ng-template>
+<div class="hcenter">
+  <app-image-cropper
+    *ngIf="imageChangedEvent || imageBase64"
+    [maintainAspectRatio]="false"
+    [roundCropper]="parametersForm.value.roundCropper"
+    [cropperRotation]="parametersForm.value.rotation"
+    [imageChangedEvent]="imageChangedEvent"
+    [imageBase64]="imageBase64"
+    (imageCropped)="onImageCropped($event)"
+  ></app-image-cropper>
 
   <img class="cropped-image" [src]="drosteImage" />
 </div>

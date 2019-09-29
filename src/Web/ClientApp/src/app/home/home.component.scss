@@ -9,7 +9,23 @@
     max-width: 100%;
   }
 }
-.images {
+
+.image-source {
+  display: flex;
+  align-items: flex-start;
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__capture-button,
+  &__toggle {
+    margin-right: 20px;
+  }
+}
+
+.hcenter {
   display: flex;
   justify-content: center;
 }
