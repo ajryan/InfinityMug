@@ -68,7 +68,7 @@ export class HomeComponent {
     this.http
       .post(`${this.baseUrl}droste/make`, {
         imageBase64: this.drosteImage,
-        fromEmail: 'test@test.com'
+        fromEmail: 'info@dopeyinfinitymug'
       })
       .subscribe(() => alert('done'))
   }

@@ -51,16 +51,17 @@ namespace Web.Controllers
     {
       var sendGridKey = Environment.GetEnvironmentVariable("sendgrid_key");
       var sendGridClient = new SendGridClient(sendGridKey);
-      var from = new EmailAddress(request.FromEmail);
+      var from = new EmailAddress("info@dopeyinfinitymug.com");
       var to = new EmailAddress("ryan.aidan@gmail.com");
       var subject = "Infinity Mug Request";
-      var plainTextContent = "Please create an infinity mug for " + request.FromEmail;
+      var plainTextContent = "Please create an infinity mug for " + request.UserEmail;
       var msg = MailHelper.CreateSingleEmail(
         from,
         to,
         subject,
         plainTextContent,
         null);
+      msg.AddCc(new EmailAddress(request.UserEmail));
 
       var base64Data = Regex
         .Match(request.ImageBase64, @"data:image/(?<type>.+?),(?<data>.+)")
@@ -94,6 +95,6 @@ namespace Web.Controllers
   public class SendEmailRequest
   {
     public string ImageBase64 { get; set; }
-    public string FromEmail { get; set; }
+    public string UserEmail { get; set; }
   }
 }
