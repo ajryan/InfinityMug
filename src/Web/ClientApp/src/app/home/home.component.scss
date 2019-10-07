@@ -1,6 +1,7 @@
 .top {
   margin-bottom: 10px;
   display: flex;
+  max-width: 100%;
   flex-direction: column;
   align-items: center;
 
@@ -12,11 +13,12 @@
 
 .image-source {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
 
   &__buttons {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    margin: 0 10px 10px 10px;
   }
 
   &__toggle {
@@ -26,11 +28,14 @@
 
 .webcam-capture {
   position: relative;
+  display: flex;
+  justify-content: center;
 
   &__button {
     position: absolute;
     bottom: 8px;
-    right: 4px;
+    left: 35%;
+    width: 30%;
   }
 }
 
@@ -46,9 +51,19 @@ app-image-cropper,
   max-width: 600px;
 }
 
-.rotation-input {
+.parameters-card {
+  width: 60%;
+}
+
+.parameters-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 5px;
-  width: 50%;
+}
+
+.make-button {
+  margin: 20px 0;
 }
 
 @media screen and (max-width: 600px) {
@@ -56,15 +71,27 @@ app-image-cropper,
     img {
       margin: 0 0 5px 0;
       max-width: 100%;
+      width: 100%;
     }
   }
 
-  .rotation-input {
+  .parameters-card {
+    width: 100%;
+    margin: 5px;
+  }
+  .parameters-form {
     width: 100%;
   }
 
-  .images {
+  .hcenter {
     flex-direction: column;
     align-items: center;
+  }
+
+  app-image-cropper,
+  .cropped-image {
+    padding: 5px;
+    width: 100%;
+    max-width: 100%;
   }
 }

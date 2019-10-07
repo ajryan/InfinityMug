@@ -2,7 +2,7 @@
   <img src="assets/logo.png" />
 </div>
 
-<div class="image-source">
+<div *ngIf="!imageChangedEvent && !imageBase64" lass="image-source">
   <div class="image-source__buttons">
     <mat-button-toggle-group
       class="image-source__toggle"
@@ -16,7 +16,6 @@
     <webcam
       *ngIf="imageSource.value === 'camera'; else upload"
       [trigger]="webcamCapture$"
-      [videoOptions]="{ aspectRatio: 1.333333333 }"
       (imageCapture)="onWebcamImageCapture($event)"
     ></webcam>
     <button
@@ -24,7 +23,7 @@
       *ngIf="imageSource.value === 'camera'"
       mat-raised-button
       class="webcam-capture__button"
-      color="primary"
+      color="accent"
       (click)="webcamCapture$.next()"
     >
       Capture
@@ -36,19 +35,22 @@
 </div>
 
 <div class="hcenter">
-  <mat-card *ngIf="imageChangedEvent || imageBase64" class="rotation-input">
-    <form [formGroup]="parametersForm">
-      <label>Rotation</label>
-      <mat-slider min="-45" max="45" formControlName="rotation"></mat-slider>
+  <mat-card *ngIf="imageChangedEvent || imageBase64" class="parameters-card">
+    <form [formGroup]="parametersForm" class="parameters-form">
+      <div>
+        <label>Rotation</label>
+        <mat-slider min="-45" max="45" formControlName="rotation"></mat-slider>
+      </div>
 
       <mat-checkbox formControlName="roundCropper">Round?</mat-checkbox>
+
+      <button mat-raised-button color="warn" (click)="onStartOver()">Start over</button>
     </form>
   </mat-card>
 </div>
 
-<div class="hcenter">
+<div *ngIf="imageChangedEvent || imageBase64" class="hcenter">
   <app-image-cropper
-    *ngIf="imageChangedEvent || imageBase64"
     [maintainAspectRatio]="false"
     [roundCropper]="parametersForm.value.roundCropper"
     [cropperRotation]="parametersForm.value.rotation"
@@ -58,4 +60,7 @@
   ></app-image-cropper>
 
   <img class="cropped-image" [src]="drosteImage" />
+</div>
+<div *ngIf="drosteImage" class="hcenter make-button">
+  <button mat-raised-button color="primary" (click)="onMakeMug()">Make my mug</button>
 </div>

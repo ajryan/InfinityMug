@@ -22,7 +22,7 @@ export class HomeComponent {
   imageBase64?: string
   inputImage?: File
   lastCropEvent?: ImageCroppedEvent
-  drosteImage?: any = ''
+  drosteImage?: string | ArrayBuffer = ''
   roundCropper = true
 
   private renderSub: Subscription
@@ -36,7 +36,7 @@ export class HomeComponent {
       rotation: -18,
       roundCropper: true
     })
-    this.imageSource = new FormControl('upload')
+    this.imageSource = new FormControl('camera')
     this.parametersForm.valueChanges.subscribe(() => this.getNewPreview())
   }
 
@@ -53,9 +53,24 @@ export class HomeComponent {
     this.inputImage = inputElement.files[0]
   }
 
+  onStartOver(): void {
+    this.imageBase64 = undefined
+    this.imageChangedEvent = undefined
+    this.drosteImage = undefined
+  }
+
   onImageCropped(event: ImageCroppedEvent): void {
     this.lastCropEvent = event
     this.getNewPreview()
+  }
+
+  onMakeMug(): void {
+    this.http
+      .post(`${this.baseUrl}droste/make`, {
+        imageBase64: this.drosteImage,
+        fromEmail: 'test@test.com'
+      })
+      .subscribe(() => alert('done'))
   }
 
   private getNewPreview(): void {
