@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -21,8 +17,11 @@ namespace Web.Controllers
   [Route("[controller]")]
   public class DrosteController : ControllerBase
   {
-    public DrosteController(IConfiguration configuration)
+    private readonly PrintfulClient _printfulClient;
+
+    public DrosteController(PrintfulClient printfulClient)
     {
+      _printfulClient = printfulClient;
     }
 
     [HttpPost]
@@ -82,13 +81,15 @@ namespace Web.Controllers
 
       try
       {
-        var sendEmailResponse = await sendGridClient.SendEmailAsync(msg);
-        return Ok(sendEmailResponse);
+        await sendGridClient.SendEmailAsync(msg);
       }
       catch (Exception ex)
       {
         return BadRequest(ex);
       }
+
+      var mockup = await _printfulClient.GenerateMockup(Convert.FromBase64String(base64Data));
+      return Ok(Convert.ToBase64String(mockup));
     }
   }
 

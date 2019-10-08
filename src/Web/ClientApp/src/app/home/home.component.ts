@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Subscription, Subject } from 'rxjs'
 import { ImageCropperComponent } from '../image-cropper/component/image-cropper.component'
 import { ImageCroppedEvent } from '../image-cropper/interfaces/image-cropped-event.interface'
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms'
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { WebcamImage } from 'ngx-webcam'
 
 @Component({
@@ -16,6 +16,7 @@ export class HomeComponent {
   imageCropper: ImageCropperComponent
 
   readonly imageSource: FormControl
+  readonly userEmail: FormControl
   readonly parametersForm: FormGroup
   readonly webcamCapture$ = new Subject()
   imageChangedEvent?: Event
@@ -37,6 +38,7 @@ export class HomeComponent {
       roundCropper: true
     })
     this.imageSource = new FormControl('camera')
+    this.userEmail = new FormControl(undefined, Validators.email)
     this.parametersForm.valueChanges.subscribe(() => this.getNewPreview())
   }
 
@@ -65,12 +67,14 @@ export class HomeComponent {
   }
 
   onMakeMug(): void {
-    this.http
-      .post(`${this.baseUrl}droste/make`, {
-        imageBase64: this.drosteImage,
-        fromEmail: 'info@dopeyinfinitymug'
-      })
-      .subscribe(() => alert('done'))
+    if (this.userEmail.valid) {
+      this.http
+        .post(`${this.baseUrl}droste/make`, {
+          imageBase64: this.drosteImage,
+          userEmail: this.userEmail.value
+        })
+        .subscribe(() => alert('done'))
+    }
   }
 
   private getNewPreview(): void {

@@ -62,6 +62,8 @@
   <img class="cropped-image" [src]="drosteImage" />
 </div>
 <div *ngIf="drosteImage" class="hcenter make-button">
-  <label>Email</label><input mat-input />
+  <mat-form-field>
+    <input matInput placeholder="Email" [formControl]="userEmail"/>
+  </mat-form-field>
   <button mat-raised-button color="primary" (click)="onMakeMug()">Make my mug</button>
 </div>

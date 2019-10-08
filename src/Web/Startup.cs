@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Web.Processing;
 
 namespace Web
 {
@@ -18,11 +19,14 @@ namespace Web
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
+
       // In production, the Angular files will be served from this directory
       services.AddSpaStaticFiles(configuration =>
       {
         configuration.RootPath = "ClientApp/dist";
       });
+
+      services.AddHttpClient<PrintfulClient>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
