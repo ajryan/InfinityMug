@@ -44,6 +44,11 @@
   justify-content: center;
 }
 
+.progress-bar {
+  margin: 6px;
+  height: 8px;
+}
+
 app-image-cropper,
 .cropped-image {
   padding: 5px;
@@ -62,8 +67,12 @@ app-image-cropper,
   margin: 5px;
 }
 
-.make-button {
+.make-form {
   margin: 20px 0;
+
+  &__button {
+    margin-left: 20px;
+  }
 }
 
 @media screen and (max-width: 600px) {

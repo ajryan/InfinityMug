@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -8,9 +9,16 @@ using Web.Controllers;
 
 namespace Web.Processing
 {
-  public static class DrosteProcessor
+  public class DrosteProcessor
   {
-    public static Image CreateDroste(
+    private readonly ILogger _logger;
+
+    public DrosteProcessor(ILogger<DrosteProcessor> logger)
+    {
+      _logger = logger;
+    }
+
+    public Image CreateDroste(
       Stream imageStream,
       CropDimensions crop,
       int rotationDegrees,
@@ -19,6 +27,16 @@ namespace Web.Processing
     {
       var image = Image.Load<Rgba32>(imageStream);
       crop.Scale(image.Width, displayedWidth);
+
+      _logger.LogInformation(
+        "Processing {Width}x{Height} image with mug at {MugLeft},{MugTop} {MugWidth}x{MugHeight}",
+        image.Width,
+        image.Height,
+        crop.X1,
+        crop.Y1,
+        crop.Width,
+        crop.Height
+      );
 
       image.Mutate(new AutoOrientProcessor());
 

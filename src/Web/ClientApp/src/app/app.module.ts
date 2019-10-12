@@ -8,6 +8,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatCardModule } from '@angular/material/card'
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatInputModule } from '@angular/material/input'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { MatSliderModule } from '@angular/material/slider'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
@@ -31,6 +33,8 @@ import { ImageCropperModule } from './image-cropper/image-cropper.module'
     MatCardModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
     MatSliderModule,
     ImageCropperModule,
     WebcamModule,

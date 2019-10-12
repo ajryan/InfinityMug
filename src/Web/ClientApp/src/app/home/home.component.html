@@ -30,7 +30,7 @@
     </button>
   </div>
   <ng-template #upload>
-    <input matInput type="file" (change)="onImageChanged($event)" />
+    <input type="file" (change)="onImageChanged($event)" />
   </ng-template>
 </div>
 
@@ -44,9 +44,18 @@
 
       <mat-checkbox formControlName="roundCropper">Round?</mat-checkbox>
 
-      <button mat-raised-button color="warn" (click)="onStartOver()">Start over</button>
+      <button mat-raised-button color="warn" (click)="onStartOver()">
+        Start over
+      </button>
     </form>
   </mat-card>
+</div>
+
+<div class="hcenter progress-bar">
+  <mat-progress-bar
+    *ngIf="processing$ | async"
+    mode="indeterminate"
+  ></mat-progress-bar>
 </div>
 
 <div *ngIf="imageChangedEvent || imageBase64" class="hcenter">
@@ -61,9 +70,16 @@
 
   <img class="cropped-image" [src]="drosteImage" />
 </div>
-<div *ngIf="drosteImage" class="hcenter make-button">
+<div *ngIf="drosteImage" class="hcenter make-form">
   <mat-form-field>
-    <input matInput placeholder="Email" [formControl]="userEmail"/>
+    <input matInput placeholder="Email" [formControl]="userEmail" />
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="onMakeMug()">Make my mug</button>
+  <button
+    class="make-form__button"
+    mat-raised-button
+    color="primary"
+    (click)="onMakeMug()"
+  >
+    Make my mug
+  </button>
 </div>

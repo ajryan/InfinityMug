@@ -1,6 +1,6 @@
 import { Component, Inject, ViewChild } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Subscription, Subject } from 'rxjs'
+import { Subscription, Subject, BehaviorSubject } from 'rxjs'
 import { ImageCropperComponent } from '../image-cropper/component/image-cropper.component'
 import { ImageCroppedEvent } from '../image-cropper/interfaces/image-cropped-event.interface'
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
@@ -19,6 +19,7 @@ export class HomeComponent {
   readonly userEmail: FormControl
   readonly parametersForm: FormGroup
   readonly webcamCapture$ = new Subject()
+  readonly processing$ = new BehaviorSubject(false)
   imageChangedEvent?: Event
   imageBase64?: string
   inputImage?: File
@@ -38,7 +39,10 @@ export class HomeComponent {
       roundCropper: true
     })
     this.imageSource = new FormControl('camera')
-    this.userEmail = new FormControl(undefined, Validators.email)
+    this.userEmail = new FormControl(
+      undefined,
+      Validators.compose([Validators.email, Validators.required])
+    )
     this.parametersForm.valueChanges.subscribe(() => this.getNewPreview())
   }
 
@@ -68,12 +72,23 @@ export class HomeComponent {
 
   onMakeMug(): void {
     if (this.userEmail.valid) {
+      this.processing$.next(true)
       this.http
         .post(`${this.baseUrl}droste/make`, {
           imageBase64: this.drosteImage,
           userEmail: this.userEmail.value
         })
-        .subscribe(() => alert('done'))
+        .subscribe({
+          next: () => {
+            this.processing$.next(false)
+            alert('done')
+          },
+          error: (err) => {
+            console.error(err)
+            this.processing$.next(false)
+            alert('failed')
+          }
+        })
     }
   }
 
@@ -82,6 +97,7 @@ export class HomeComponent {
       return
     }
 
+    this.processing$.next(true)
     const formData = new FormData()
 
     if (this.inputImage) {
@@ -120,7 +136,8 @@ export class HomeComponent {
         },
         err => {
           console.log(err)
-        }
+        },
+        () => this.processing$.next(false)
       )
   }
 

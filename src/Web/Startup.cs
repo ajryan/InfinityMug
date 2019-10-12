@@ -26,6 +26,7 @@ namespace Web
         configuration.RootPath = "ClientApp/dist";
       });
 
+      services.AddSingleton<DrosteProcessor>();
       services.AddHttpClient<PrintfulClient>();
     }
 

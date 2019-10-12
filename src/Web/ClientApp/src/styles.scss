@@ -14,6 +14,7 @@ body {
   background-color: #252525;
   color: #eee;
   margin: 0;
+  font-family: sans-serif;
 }
 
 /* Provide sufficient contrast against white background */
@@ -29,4 +30,12 @@ code {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.loading-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 20px;
 }
